@@ -1,0 +1,8 @@
+{% extends 'frontend/base.html' %}
+{% block page_title %} pet {% endblock %}
+{% block content %} 
+	<p>
+	{{ user.species.name }}
+	</p>
+	{% include 'pets/feed.html' %}
+{% endblock %}

@@ -1,13 +1,14 @@
 from django.conf.urls import patterns, include, url
-
+import pet.views
 # Uncomment the next two lines to enable the admin:
 # from django.contrib import admin
 # admin.autodiscover()
 
 urlpatterns = patterns('',
 	#
-	url(r'^pet/', include('pet.urls',namespace ="pet")),
-	
+	url(r'^list.html$', pet.views.PetListView.as_view(), name='list'),
+	url(r'^(?P<pk>\d+)$', pet.views.SinglePetView.as_view(), name='onepet'),
+	# url(r'^listall.html', "pet.views.test", name='list'),
     # Examples:
     # url(r'^$', 'miniproject.views.home', name='home'),
     # url(r'^miniproject/', include('miniproject.foo.urls')),
