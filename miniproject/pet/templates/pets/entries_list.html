@@ -1,0 +1,37 @@
+{% include "pagination/pagination.html" with pagination_name="pets_pagination" %}
+<table class="table table-striped">
+	<thead>
+		<tr>
+			<th>
+				#
+			</th>
+			<th>
+				Name {% include "pagination/ordering_button.html" with order="name" dir="asc" %} {% include "pagination/ordering_button.html" with order="name" dir="desc" %}
+			</th>
+			<th>
+				Date Of Birth {% include "pagination/ordering_button.html" with order="date_of_birth" dir="asc" %} {% include "pagination/ordering_button.html" with order="date_of_birth" dir="desc" %}
+			</th>
+			<th>
+				Species {% include "pagination/ordering_button.html" with order="species__name" dir="asc" %} {% include "pagination/ordering_button.html" with order="species__name" dir="desc" %}
+			</th>
+		</tr>
+	</thead>
+	<tbody>
+	{% for pet in page_object %}
+		<tr>
+			<td>
+			{{ forloop.counter }}
+			</td>
+			<td>
+				<a href="{% url pet:edit pk=pet.id %}">{{ pet.name }}</a>
+			</td>
+			<td>
+				{{ pet.date_of_birth|date:"d M Y" }}
+			</td>
+			<td>
+				{{ pet.species.name }}
+			</td>
+		</tr>
+	{% endfor %}
+	</tbody>
+</table>

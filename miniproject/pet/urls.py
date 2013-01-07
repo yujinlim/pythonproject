@@ -8,6 +8,8 @@ urlpatterns = patterns('',
 	#
 	url(r'^list.html$', pet.views.PetListView.as_view(), name='list'),
 	url(r'^(?P<pk>\d+)$', pet.views.SinglePetView.as_view(), name='onepet'),
+	url(r'^entries$', pet.views.PetEntriesView.as_view(), name='entries'),
+	url(r'^edit/(?P<pk>\d+)/?$', pet.views.PetEditView.as_view(), name='edit'),
 	# url(r'^listall.html', "pet.views.test", name='list'),
     # Examples:
     # url(r'^$', 'miniproject.views.home', name='home'),

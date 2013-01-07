@@ -2,6 +2,7 @@
 
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
+DEBUG_JSON_QUERIES = DEBUG
 
 ADMINS = (
     # ('Your Name', 'your_email@example.com'),
@@ -117,6 +118,10 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'pet',
     'frontend',
+    'assistedjson',
+    'backend',
+    'utilities',
+    'paginatedview',
     # Uncomment the next line to enable the admin:
     # 'django.contrib.admin',
     # Uncomment the next line to enable admin documentation:
@@ -151,3 +156,5 @@ LOGGING = {
         },
     }
 }
+
+DEFAULT_PAGINATION = 2

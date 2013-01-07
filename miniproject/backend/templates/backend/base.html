@@ -6,12 +6,22 @@
 	<title>{% block page_title %}{% endblock %}</title>
 	<meta http-equiv="content-type" content="text/html;charset=utf-8" />
 	{% include "utilities/head_css.html" with url="utilities/bootstrap.css" %}
+	{% include "utilities/head_js.html" with url="utilities/jquery-1.8.3.min.js" %}
 	{% include "utilities/head_js.html" with url="utilities/bootstrap.js" %}
+	{% include "utilities/head_js.html" with url="utilities/underscore.js" %}
+	{% include "utilities/head_js.html" with url="utilities/backbone.js" %}
+	{% block script %}{% endblock %}
 </head>
 
 <body>
-	<a>Hello</a>
-	{% block content %}{% endblock %}
+	<div class="container">
+			<header class="navbar">
+				<ul class="nav">
+					<li><a>Home</a></li>
+				</ul>
+			</header>
+	{% block content %} {% endblock %}
+	</div>
 </body>
 
 </html>

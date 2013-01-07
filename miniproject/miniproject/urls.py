@@ -7,7 +7,6 @@ from django.conf.urls import patterns, include, url
 urlpatterns = patterns('',
 	#
 	url(r'^pet/', include('pet.urls',namespace ="pet")),
-	
     # Examples:
     # url(r'^$', 'miniproject.views.home', name='home'),
     # url(r'^miniproject/', include('miniproject.foo.urls')),
