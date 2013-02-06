@@ -1,8 +1,12 @@
 # Django settings for miniproject project.
+import django.core.urlresolvers
 
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 DEBUG_JSON_QUERIES = DEBUG
+
+LOGIN_URL = django.core.urlresolvers.reverse_lazy('backend:adminlogin')
+
 
 ADMINS = (
     # ('Your Name', 'your_email@example.com'),
@@ -94,6 +98,7 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
+    'django.middleware.locale.LocaleMiddleware',
     # Uncomment the next line for simple clickjacking protection:
     # 'django.middleware.clickjacking.XFrameOptionsMiddleware',
 )
@@ -157,4 +162,6 @@ LOGGING = {
     }
 }
 
-DEFAULT_PAGINATION = 2
+TEMPLATE_CONTEXT_PROCESSES = ('django.contrib.messages.context_processors.messages',)
+
+DEFAULT_PAGINATION = 20

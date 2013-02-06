@@ -1,15 +1,19 @@
 from django.conf.urls import patterns, include, url
 import pet.views
+import django.contrib.auth.decorators
 # Uncomment the next two lines to enable the admin:
 # from django.contrib import admin
 # admin.autodiscover()
 
 urlpatterns = patterns('',
 	#
-	url(r'^list.html$', pet.views.PetListView.as_view(), name='list'),
+	url(r'^list.html$', django.contrib.auth.decorators.login_required(pet.views.PetListView.as_view()), name='list'),
 	url(r'^(?P<pk>\d+)$', pet.views.SinglePetView.as_view(), name='onepet'),
 	url(r'^entries$', pet.views.PetEntriesView.as_view(), name='entries'),
 	url(r'^edit/(?P<pk>\d+)/?$', pet.views.PetEditView.as_view(), name='edit'),
+	url(r'^insert$', pet.views.PetInsertView.as_view(), name='insert'),
+	url(r'^delete/(?P<pk>\d+)$', pet.views.PetDeleteView.as_view(), name="delete"),
+	url(r'^species/$', pet.views.PetSpeciesView.as_view(), name="species")
 	# url(r'^listall.html', "pet.views.test", name='list'),
     # Examples:
     # url(r'^$', 'miniproject.views.home', name='home'),

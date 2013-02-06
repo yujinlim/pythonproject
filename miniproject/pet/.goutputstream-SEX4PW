@@ -1,0 +1,32 @@
+# Create your views here.
+import django.views.generic
+import django.shortcuts
+import pet.models
+import datetime
+import django.db
+import assistedjson.views
+
+# List of all pets
+class PetListView (assistedjson.views.JsonView) :
+	def get(self, request, *args):
+		name = request.session.get('hello', 'nothing')
+		dogs  = pet.models.Pet.objects.filter(name__istartswith='b').exclude(name="Bill")
+		print dogs
+		self._response.html("hello world")
+		self._response.data(("lala",2),("tretre",54))
+		self._response.message("DSDAS")
+		self._response.error("DSADSA")
+		return self.respond()
+		print django.db.connection.queries
+		return django.shortcuts.render_to_response("pets/base.html", {'now':datetime.datetime.now()})
+
+# Get single pet
+class SinglePetView (django.views.generic.View) :
+	def get(self, request, *args, **kwargs):
+		primary_key = kwargs['pk']
+		try:
+			dog = pet.models.Pet.objects.filter(pk = primary_key)[0]
+		except:
+			 pass
+		return django.shortcuts.render_to_response("pets/base.html", {'user':dog})
+		

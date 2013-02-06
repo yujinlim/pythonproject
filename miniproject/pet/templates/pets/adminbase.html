@@ -7,8 +7,7 @@
 	{% include "utilities/head_css.html" with url="backend/pets.css" %}
 {% endblock %}
 {% block content %} 
-	<div id="pet-entries-messages">
-		
-	</div>
-	<div id="pet-entries-list" data-default-page="1" data-default-order="name" data-default-order-dir="asc" data-url="{% url pet:entries %}"></div>
+	<h2>{{ page_title }}</h2>
+	<a class="btn btn-primary" href="{% url 'pet:insert' %}">Add</a>
+	<div id="pet-entries-list" data-default-page="1" data-default-order="name" data-default-order-dir="asc" data-url="{% url 'pet:entries' %}"></div>
 {% endblock %}

@@ -1,5 +1,8 @@
 var paginator;
-$(window).ready(function(){
+$(window).ready(function(){ 
+	$('#pet-delete').live('click',function(){
+		alert("Are You Sure?");
+	});
 	paginator = new Zest.Paginator({},"#pet-entries-list");
     var bootstrap = new Zest.Bootstrap(),
         paginatorMessages = $('#pet-entries-messages');
@@ -13,4 +16,6 @@ $(window).ready(function(){
        bootstrap.putMessagesIntoBox(response.messages, paginatorMessages);
     });
     paginator.loadData();
+    
 })
+

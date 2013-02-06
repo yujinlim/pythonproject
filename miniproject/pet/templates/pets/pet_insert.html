@@ -1,7 +1,13 @@
 {% extends 'backend/base.html' %}
 {% block page_title %} pet {% endblock %}
+{% block script %}
+	{% include "utilities/head_js.html" with url="backend/pet.js" %}
+	<script language="javascript">
+		var videos = {{ videos }};
+	</script>
+{% endblock %}
 {% block content %} 
-<form method="POST" action="{% url 'pet:edit' pk=form.instance.pk %}/">
+<form method="POST" action="{% url 'pet:insert' %}">
 	<div class="row">
 			<div class="offset2 span8">
 				<div class="form-inline">
@@ -27,6 +33,15 @@
 							{{ form.available_until }} {{ form.available_until.errors }}
 					<label class="pet-label">{{ form.organization.label }}</label>
 							{{ form.organization }} {{ form.organization.errors }}
+				</div>
+				<div ng-controller="VideosController">
+				<div class="form-inline">
+					<div>  Video Link : <input type="text" ng-model="videoLink"/></div>
+					<div>  Ordering : <input type="text" ng-model="videoOrdering"/></div>
+					<div>  Published : <input type="checkbox" ng-model="videoPublished"/></div>
+										<a href="#" ng-click="addVideo()">Add</a>
+				</div>
+					{% include 'pets/pet_videos.html' %}
 				</div>
 			<div class="divider"></div>
 			<input class="btn btn-primary" type="submit" value="Save"/> {% csrf_token %}

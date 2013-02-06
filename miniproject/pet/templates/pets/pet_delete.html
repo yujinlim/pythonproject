@@ -1,0 +1,12 @@
+{% extends 'backend/base.html' %}
+{% block page_title %} pet {% endblock %}
+{% block content %} 
+<form method="POST" action="{% url pet:list %}/">
+	<div class="row">
+			<div class="offset2 span8">
+			<div class="divider"></div>
+			<input class="btn btn-primary" type="submit" value="Delete"/> {% csrf_token %}
+			</div>
+	</div>
+</form>
+{% endblock %}

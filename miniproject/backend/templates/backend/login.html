@@ -1,0 +1,16 @@
+{% extends 'backend/base.html' %}
+{% block page_title %}Login{% endblock %}
+{% block script %}{% endblock %}
+{% block content %} 
+	<div class="row-fluid">
+		<div class="span4 offset4">
+			<form method="POST" action="{% url 'backend:adminlogin.action' %}">
+			<div class="form-inline"><label class="pet-label">Username</label><input name="username" type="text" /></div>
+			<div class="form-inline"><label class="pet-label">Password</label><input name="password" type="password" /></div>
+			<div class="divider"></div>
+			<input class="btn btn-primary" type="submit" value="Login"/> {% csrf_token %}
+			</form>
+		</div>
+	</div>
+
+{% endblock %}

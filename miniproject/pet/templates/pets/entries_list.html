@@ -14,22 +14,40 @@
 			<th>
 				Species {% include "pagination/ordering_button.html" with order="species__name" dir="asc" %} {% include "pagination/ordering_button.html" with order="species__name" dir="desc" %}
 			</th>
+			<th>
+				Created At {% include "pagination/ordering_button.html" with order="created_datetime" dir="asc" %} {% include "pagination/ordering_button.html" with order="created_datetime" dir="desc" %}
+			</th>
+			<th>
+				Available Until  {% include "pagination/ordering_button.html" with order="available_until" dir="asc" %} {% include "pagination/ordering_button.html" with order="available_until" dir="desc" %}
+			</th>
+			<th>
+				
+			</th>
 		</tr>
 	</thead>
 	<tbody>
 	{% for pet in page_object %}
 		<tr>
 			<td>
-			{{ forloop.counter }}
+			{{ forloop.counter0|add:page_object.start_index }}
 			</td>
 			<td>
-				<a href="{% url pet:edit pk=pet.id %}">{{ pet.name }}</a>
+				<a href="{% url 'pet:edit' pk=pet.id %}">{{ pet.name }}</a>
 			</td>
 			<td>
 				{{ pet.date_of_birth|date:"d M Y" }}
 			</td>
 			<td>
 				{{ pet.species.name }}
+			</td>
+			<td>
+				{{ pet.created_datetime|date:"d M Y" }}
+			</td>
+			<td>
+				{{ pet.available_until|date:"d M Y" }}
+			</td>
+			<td>
+				<a id="pet-delete" class="btn btn-danger" href="{% url 'pet:delete' pk=pet.id %}"><i class="icon-remove"></i></a>
 			</td>
 		</tr>
 	{% endfor %}
