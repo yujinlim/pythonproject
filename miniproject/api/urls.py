@@ -1,17 +1,18 @@
 from django.conf.urls import patterns, include, url
-import backend.views
-import django.views.decorators.http
-
+import api.views
+import django.contrib.auth.decorators   
 # Uncomment the next two lines to enable the admin:
 # from django.contrib import admin
 # admin.autodiscover()
 
 urlpatterns = patterns('',
-	#
-	url(r'^pet/', include('pet.urls',namespace ="pet")),
-	url(r'^backend/', include('backend.urls', namespace="backend")),
-	url(r'^api/', include('api.urls', namespace="api"))
-	
+    url(r'^random/$', api.views.RandomApi.as_view(), name="random"),
+    url(r'^next/$', api.views.NextApi.as_view(), name="next"),
+    url(r'^details/$', api.views.DetailApi.as_view(), name="detail"),
+    url(r'^appointment/$', api.views.AppointmentApi.as_view(), name="appointment"),
+    url(r'^donate/$', api.views.DonationApi.as_view(), name="donation")
+
+    # url(r'^listall.html', "pet.views.test", name='list'),
     # Examples:
     # url(r'^$', 'miniproject.views.home', name='home'),
     # url(r'^miniproject/', include('miniproject.foo.urls')),

@@ -164,4 +164,4 @@ LOGGING = {
 
 TEMPLATE_CONTEXT_PROCESSES = ('django.contrib.messages.context_processors.messages',)
 
-DEFAULT_PAGINATION = 20
+DEFAULT_PAGINATION = 10

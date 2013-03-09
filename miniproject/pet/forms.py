@@ -3,14 +3,15 @@ import pet.models
 import pet.fields
 
 class PetForm(django.forms.ModelForm):
-	#description = django.forms.CharField(widget=django.forms.widgets.TextInput)
+	date_of_birth = django.forms.DateField()
+	# description = django.forms.CharField(widget=django.forms.widgets.TextInput)
 	"""def __init__(self, *args, **kwargs):
 		super(PetForm, self).__init__(*args, **kwargs)
 		races = [(x.pk, x.name) for x in list(pet.models.Race.objects.filter(species_id = self.instance.species_id))]
 		self.fields['race'] = django.forms.ChoiceField(choices = races, required=False)
 		print(args, kwargs)"""
 
-	def clean_race(self):
+	"""def clean_race(self):
 		print(self.data)
 		species = self.data["species"][0]
 		try:
@@ -25,13 +26,12 @@ class PetForm(django.forms.ModelForm):
 		except pet.models.Race.DoesNotExist:
 			raise django.forms.ValidationError("Race and species do not match")
 		else:
-			return race
+			return race"""
 		
 	
 	class Meta:
 		model = pet.models.Pet
-		
-		#exclude = ('name',)
+
 		
 class PetVideoForm(django.forms.ModelForm):
 	video_link = django.forms.CharField(widget=django.forms.widgets.TextInput)

@@ -7,4 +7,4 @@ function VideosController($scope){
 				ordering:$scope.videoOrdering
 				});
 			console.log("hahahdalh")}; 
-	}
+}

@@ -34,13 +34,17 @@
 					<label class="pet-label">{{ form.organization.label }}</label>
 							{{ form.organization }} {{ form.organization.errors }}
 				</div>
+				<div class="divider"></div>
 				<div ng-controller="VideosController">
 				<div class="form-inline">
-					<div>  Video Link : <input type="text" ng-model="videoLink"/></div>
-					<div>  Ordering : <input type="text" ng-model="videoOrdering"/></div>
-					<div>  Published : <input type="checkbox" ng-model="videoPublished"/></div>
-										<a href="#" ng-click="addVideo()">Add</a>
+					<label class="pet-label">Video Link </label> 
+					<input type="text" ng-model="videoLink"/>
+					<label class="pet-label">Ordering</label>
+					<input type="text" ng-model="videoOrdering"/>
+					<label class="pet-label">Published</label>
+					<input type="checkbox" ng-model="videoPublished"/>
 				</div>
+				<a href="#" ng-click="addVideo()">Add</a>
 					{% include 'pets/pet_videos.html' %}
 				</div>
 			<div class="divider"></div>
