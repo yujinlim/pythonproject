@@ -21,17 +21,25 @@
 
 <body ng-app>
 	<div class="container">
+        <div class="hero-unit">
+            <h1>
+            Pet Roulettes
+            </h1>
+        </div>
 		<header>
-				<ul class="nav nav-tabs">
-					<li><a href="{% url 'pet:list' %}">PETS</a></li>
-					<li class="divider-vertical"></li>
-					<li><a href="#">ANOTHER</a></li>
-					<li class="divider-vertical"></li>
-					<li><a href="#">Another</a></li>
-					<li class="divider-vertical"></li>
-					<li><a href="#">Another</a></li>
-				</ul>
+				<div class="navbar">
+                    <div class="navbar-inner">
+                        <ul class="nav">
+                            <li><a href="{% url 'pet:list' %}">pets</a></li>
+                            <li class="divider-vertical"></li>
+                            <li><a href="#">organization</a></li>
+                            <li class="divider-vertical"></li>
+                            <li><a href="#">summary</a></li>
+                        </ul>
+                    </div>
+                </div>
 		</header>
+
 		<div> 
 		{% for message in messages %} 
 			{{ message }}

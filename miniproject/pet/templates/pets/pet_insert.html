@@ -2,54 +2,87 @@
 {% block page_title %} pet {% endblock %}
 {% block script %}
 	{% include "utilities/head_js.html" with url="backend/pet.js" %}
-	<script language="javascript">
-		var videos = {{ videos }};
-	</script>
+<!--
+        <script language="javascript">
+            var videos = {{videos}};
+        </script>
+-->
 {% endblock %}
-{% block content %} 
+{% block content %}
+<div ng-controller="VideosController">
+<div class="span3 side-menu" >
+    <ul class="nav nav-list">
+        <li class="nav-header">Admin - Insert Pet Navigation</li>
+        <li><a ng-click="changeInsertPetView('pet')">Pet</a></li>
+        <li class="divider"></li>
+        <li><a ng-click="changeInsertPetView('video')">Video</a></li>
+        <li></li>
+    </ul>
+</div>
 <form method="POST" action="{% url 'pet:insert' %}">
+	{% csrf_token %}
 	<div class="row">
-			<div class="offset2 span8">
+			<div class="span8">
+				<div id="pet" ng-hide="insertPet">
+                    <div class="form-inline">
+                        <label class="pet-label">{{ pet_form.name.label }}</label>
+                                {{ pet_form.name }} {{ pet_form.name.errors }}
+                        <label class="pet-label">{{ pet_form.date_of_birth.label }}</label>
+                                {{ pet_form.date_of_birth }} {{ pet_form.date_of_birth.errors }}
+                    </div>
+                    <div class="form-horizontal">
+                        <label class="pet-label">{{ pet_form.description.label }}</label>
+                                {{ pet_form.description }} {{ pet_form.description.errors }}
+                    </div>
+                    <div class="divider"></div>
+                    <div class="form-inline" data-url="{% url 'pet:species' %}">
+                        <label class="pet-label">{{ pet_form.species.label }}</label>
+                                {{ pet_form.species }} {{ pet_form.species.errors }}
+                        <label class="pet-label">{{ pet_form.race.label }}</label>
+                                {{ pet_form.race }} {{ pet_form.race.errors }}
+                    </div>
+                    <div class="divider"></div>
+                    <div class="form-inline">
+                        <label class="pet-label">{{ pet_form.available_until.label }}</label>
+                                {{ pet_form.available_until }} {{ pet_form.available_until.errors }}
+                        <label class="pet-label">{{ pet_form.organization.label }}</label>
+                                {{ pet_form.organization }} {{ pet_form.organization.errors }}
+                    </div>
+                </div>
+                {{ pet_form.videos }}
+<!--
 				<div class="form-inline">
-					<label class="pet-label">{{ form.name.label }}</label>
-							{{ form.name }} {{ form.name.errors }}
-					<label class="pet-label">{{ form.date_of_birth.label }}</label>
-							{{ form.date_of_birth }} {{ form.date_of_birth.errors }}
+										
+					<label class="pet-label">{{ pet_video_form.ordering.label }}</label>
+					{{ pet_video_form.ordering }} {{ pet_video_form.ordering.errors }}
+                    <label class="pet-label">{{ pet_video_form.published.label }}</label>
+							{{ pet_video_form.published }} {{ pet_video_form.published.errors }}
 				</div>
-				<div class="form-horizontal">
-					<label class="pet-label">{{ form.description.label }}</label>
-							{{ form.description }} {{ form.description.errors }}
-				</div>
-				<div class="divider"></div>
-				<div class="form-inline" data-url="{% url 'pet:species' %}">
-					<label class="pet-label">{{ form.species.label }}</label>
-							{{ form.species }} {{ form.species.errors }}
-					<label class="pet-label">{{ form.race.label }}</label>
-							{{ form.race }} {{ form.race.errors }}
-				</div>
-				<div class="divider"></div>
-				<div class="form-inline">
-					<label class="pet-label">{{ form.available_until.label }}</label>
-							{{ form.available_until }} {{ form.available_until.errors }}
-					<label class="pet-label">{{ form.organization.label }}</label>
-							{{ form.organization }} {{ form.organization.errors }}
-				</div>
-				<div class="divider"></div>
-				<div ng-controller="VideosController">
-				<div class="form-inline">
-					<label class="pet-label">Video Link </label> 
-					<input type="text" ng-model="videoLink"/>
-					<label class="pet-label">Ordering</label>
-					<input type="text" ng-model="videoOrdering"/>
-					<label class="pet-label">Published</label>
-					<input type="checkbox" ng-model="videoPublished"/>
-				</div>
-				<a href="#" ng-click="addVideo()">Add</a>
-					{% include 'pets/pet_videos.html' %}
-				</div>
+                <div class="divider"></div>
+-->
+<!--
+                <label class="pet-label">{{ pet_video_form.video_link.label }}</label>
+								{{ pet_video_form.video_link }} {{ pet_video_form.video_link.errors }}
+-->
+				<div id="video" ng-show="insertPet">
+                    <div>
+                                        <div class="form-inline">
+                                            <label class="pet-label">Video Link </label> 
+                                            <input type="text" ng-model="videoLink"/>
+                                            <label class="pet-label">Ordering</label>
+                                            <input type="text" ng-model="videoOrdering"/>
+                                            <label class="pet-label">Published</label>
+                                            <input type="checkbox" ng-model="videoPublished"/>
+                                        </div>
+                                        <a href="" class="btn" ng-click="addVideo()">add a video</a>
+                                            {% include 'pets/pet_videos.html' %}
+                    </div>
+                </div>
 			<div class="divider"></div>
-			<input class="btn btn-primary" type="submit" value="Save"/> {% csrf_token %}
-			</div>
+			<input class="btn btn-primary" type="submit" value="Save"/>
+            <a href="" class="btn btn-primary pull-right">Next To Videos</a> 
+        </div>
 	</div>
 </form>
+</div>
 {% endblock %}

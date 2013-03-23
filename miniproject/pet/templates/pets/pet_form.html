@@ -1,7 +1,7 @@
 {% extends 'backend/base.html' %}
 {% block page_title %} pet {% endblock %}
 {% block content %} 
-<form method="POST" action="{% url 'pet:edit' pk=form.instance.pk %}/">
+<form method="POST" action="{% url 'pet:edit' pk=form.id %}/">
 	<div class="row">
 			<div class="offset2 span8">
 				<div class="form-inline">
@@ -28,7 +28,11 @@
 					<label class="pet-label">{{ form.organization.label }}</label>
 							{{ form.organization }} {{ form.organization.errors }}
 				</div>
+                
 			<div class="divider"></div>
+            {% for video_form in video_forms %}
+                {{ video_form }}
+            {% endfor %}
 			<input class="btn btn-primary" type="submit" value="Save"/> {% csrf_token %}
 			</div>
 	</div>

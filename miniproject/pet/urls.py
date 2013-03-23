@@ -12,6 +12,7 @@ urlpatterns = patterns('',
 	url(r'^entries$', pet.views.PetEntriesView.as_view(), name='entries'),
 	url(r'^edit/(?P<pk>\d+)/?$', pet.views.PetEditView.as_view(), name='edit'),
 	url(r'^insert$', pet.views.PetInsertView.as_view(), name='insert'),
+	url(r'^test_insert$', pet.views.PetTestView.as_view(), name='test_insert'),
 	url(r'^delete/(?P<pk>\d+)$', pet.views.PetDeleteView.as_view(), name="delete"),
 	url(r'^species/$', pet.views.PetSpeciesView.as_view(), name="species"),
     url(r'^pets/$', pet.views.PetsView.as_view(), name="pets")

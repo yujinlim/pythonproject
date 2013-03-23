@@ -35,6 +35,7 @@ class PetForm(django.forms.ModelForm):
 		
 class PetVideoForm(django.forms.ModelForm):
 	video_link = django.forms.CharField(widget=django.forms.widgets.TextInput)
+	
 	class Meta:
 		model = pet.models.PetVideo
 		exclude = ('pet', 'created_by', 'created_date')

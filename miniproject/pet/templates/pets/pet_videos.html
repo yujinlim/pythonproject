@@ -1,10 +1,12 @@
-	<ul>
+	{% verbatim %} 
+    <ol>
 		<li ng-repeat="video in videos">
-			{% verbatim %} 
 			{{video.video_link}}
 			{{video.ordering}}
 			{{video.published}}
-			{% endverbatim %}
+			
 		</li>
-	</ul>
+	</ol>
+    <input type="hidden" name="videos" value="{{videos}}"/>
+    {% endverbatim %}
 

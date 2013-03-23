@@ -8,6 +8,6 @@
 {% endblock %}
 {% block content %} 
 	<h2>{{ page_title }}</h2>
-	<a class="btn btn-primary" href="{% url 'pet:insert' %}">Add</a>
+	<a class="btn btn-primary" href="{% url 'pet:insert' %}">new pet</a>
 	<div id="pet-entries-list" data-default-page="1" data-default-order="name" data-default-order-dir="asc" data-url="{% url 'pet:entries' %}"></div>
 {% endblock %}
