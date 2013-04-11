@@ -1,5 +1,4 @@
 {% extends 'backend/base.html' %}
-
 {% block page_title %} pet {% endblock %}
 {% block script %}
 	{% include "utilities/head_js.html" with url="backend/pet.js" %}
@@ -15,6 +14,7 @@
             {% else %}
                 app.value('PetVideos', '');
             {% endif %}
+                
         </script>
 {% endblock %}
 {% block content %}
@@ -28,8 +28,8 @@
     </ul>
 </div>
     <div class="span12 side-container">
-                <form method="POST" action="{% url 'pet:insert' %}">
-                {% csrf_token %}
+            <form method="POST" action="{% url 'pet:edit' pk=pet_form.id %}/">
+            {% csrf_token %}
                 {% include 'pets/pet_form.html' %}
                 {% include 'pets/pet_videos_form.html' %}
                 <div class="divider"></div>

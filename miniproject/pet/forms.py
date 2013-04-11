@@ -3,7 +3,9 @@ import pet.models
 import pet.fields
 
 class PetForm(django.forms.ModelForm):
-	date_of_birth = django.forms.DateField()
+	date_of_birth = django.forms.CharField(widget=django.forms.widgets.TextInput(attrs={'size':10,'b-datepicker':'{{dateOptions}}', 'ng-model':'dateObject'}))
+	available_until = django.forms.CharField(widget=django.forms.widgets.TextInput(attrs={'size':10,'b-datepicker':'{{dateOptions}}', 'ng-model':'dateObject'}))
+
 	# description = django.forms.CharField(widget=django.forms.widgets.TextInput)
 	"""def __init__(self, *args, **kwargs):
 		super(PetForm, self).__init__(*args, **kwargs)
@@ -31,6 +33,7 @@ class PetForm(django.forms.ModelForm):
 	
 	class Meta:
 		model = pet.models.Pet
+		exclude = ('organization')
 
 		
 class PetVideoForm(django.forms.ModelForm):
@@ -38,7 +41,7 @@ class PetVideoForm(django.forms.ModelForm):
 	
 	class Meta:
 		model = pet.models.PetVideo
-		exclude = ('pet', 'created_by', 'created_date')
+		exclude = ('pet', 'created_by', 'created_date', 'ordering')
 	
 	
 

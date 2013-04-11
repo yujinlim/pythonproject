@@ -1,3 +1,4 @@
+{% load filter %}
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
 	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
@@ -14,25 +15,24 @@
 	{% include "utilities/head_js.html" with url="utilities/backbone.js" %}
 	{% include "utilities/head_js.html" with url="utilities/angular.js" %}
 	{% include "utilities/head_js.html" with url="utilities/jquery-ui-1.10.1.custom.js" %}
+	{% include "utilities/head_js.html" with url="utilities/ui-bootstrap-tpls-0.2.0.js" %}
+    {% include "utilities/head_js.html" with url="utilities/utilities.js" %}
 	{% include "utilities/head_js.html" with url="backend/backend.js" %}
 	{% include "utilities/head_css.html" with url="backend/backend.css" %}
 	{% block script %}{% endblock %}
 </head>
 
-<body ng-app>
-	<div class="container">
-        <div class="hero-unit">
-            <h1>
-            Pet Roulettes
-            </h1>
-        </div>
+<body ng-app="petRouletteApp">
+	<div>
 		<header>
 				<div class="navbar">
-                    <div class="navbar-inner">
+                    <div class="navbar-inner pet-nav">
                         <ul class="nav">
+                            <li><span>Pet Roulette</span></li>
+                            <li class="divider-vertical"></li>
                             <li><a href="{% url 'pet:list' %}">pets</a></li>
                             <li class="divider-vertical"></li>
-                            <li><a href="#">organization</a></li>
+                            <li><a href="{% url 'organization:list' %}">organization</a></li>
                             <li class="divider-vertical"></li>
                             <li><a href="#">summary</a></li>
                         </ul>
@@ -40,13 +40,20 @@
                 </div>
 		</header>
 
-		<div> 
-		{% for message in messages %} 
-			{{ message }}
-		{% endfor %}
-		</div>
-	{% block content %} {% endblock %}
-	</div>
+		<div class="container-fluid petRouletterContainer">
+
+        {% if messages %}
+            <div class="alert">
+            <span><strong>Error in </strong></span>
+            {% for message in messages %} 
+                <strong>{{ message.message|remove_underscore }}</strong>
+            {% endfor %}
+            </div>
+        {% endif %}
+        
+        {% block content %} {% endblock %}
+        </div>
+</div>
 </body>
 
 </html>

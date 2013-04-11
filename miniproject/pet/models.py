@@ -29,6 +29,7 @@ class Pet(assistedjson.models.SerializableModel):
 	
 	
 class PetVideo(assistedjson.models.SerializableModel):
+	title = django.db.models.TextField()
 	video_link = django.db.models.TextField()
 	ordering = django.db.models.IntegerField()
 	created_by = django.db.models.ForeignKey(django.contrib.auth.models.User, related_name="videos")
@@ -54,6 +55,7 @@ class Organization(assistedjson.models.SerializableModel):
 	email = django.db.models.EmailField()
 	contact_number = django.db.models.CharField(max_length=255, null=True, blank=True)
 	created_datetime = django.db.models.DateTimeField(auto_now=True)
+	youtube_channel = django.db.models.CharField(max_length=255, null=True, blank=True)
 	user = django.db.models.OneToOneField(django.contrib.auth.models.User, primary_key=True)
 	
 class Appointment(assistedjson.models.SerializableModel):
@@ -63,4 +65,16 @@ class Appointment(assistedjson.models.SerializableModel):
 	created_datetime = django.db.models.DateTimeField(auto_now=True)
 	appointment_datetime = django.db.models.DateTimeField()
 	appointment_time = django.db.models.DateTimeField()
+	pet = django.db.models.ForeignKey(Pet, related_name="appointments")
+
+class AppointmentConfirmation(assistedjson.models.SerializableModel):
+	APPOINTMENT_STATUS = (
+						(0, 'in progress'),
+						(1,'adopted'), 
+						(2, 'rejected'),
+						(3, 'pending'),
+						)
 	
+	confirmed_date = django.db.models.DateTimeField()
+	status = django.db.models.CharField(max_length=255, choices=APPOINTMENT_STATUS, default=0)
+	appointment = django.db.models.OneToOneField(Appointment, primary_key=True, related_name="appointment_confirm_status")

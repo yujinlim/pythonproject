@@ -1,0 +1,62 @@
+{% include "pagination/pagination.html" with pagination_name="pets_pagination" %}
+<table class="table table-striped">
+	<thead>
+		<tr>
+			<th>
+				#
+			</th>
+			<th>
+				Name {% include "pagination/ordering_button.html" with order="name" dir="asc" %} {% include "pagination/ordering_button.html" with order="name" dir="desc" %}
+			</th>
+			<th>
+				Created At {% include "pagination/ordering_button.html" with order="created_datetime" dir="asc" %} {% include "pagination/ordering_button.html" with order="created_datetime" dir="desc" %}
+			</th>
+			<th>
+				Address {% include "pagination/ordering_button.html" with order="address" dir="asc" %} {% include "pagination/ordering_button.html" with order="address" dir="desc" %}
+			</th>
+			<th>
+				Email {% include "pagination/ordering_button.html" with order="email" dir="asc" %} {% include "pagination/ordering_button.html" with order="email" dir="desc" %}
+			</th>
+			<th>
+				Contact Number  {% include "pagination/ordering_button.html" with order="contact_number" dir="asc" %} {% include "pagination/ordering_button.html" with order="contact_number" dir="desc" %}
+			</th>
+            <th>
+				Youtube User  {% include "pagination/ordering_button.html" with order="youtube_channel" dir="asc" %} {% include "pagination/ordering_button.html" with order="youtube_channel" dir="desc" %}
+			</th>
+			<th>
+				
+			</th>
+		</tr>
+	</thead>
+	<tbody>
+	{% for organization in page_object %}
+		<tr>
+			<td>
+			{{ forloop.counter0|add:page_object.start_index }}
+			</td>
+			<td>
+				<a href="">{{ organization.name }}</a>
+			</td>
+			<td>
+				{{ organization.created_datetime|date:"d M Y" }}
+			</td>
+			<td>
+				{{ organization.address }}
+			</td>
+			<td>
+				{{ organization.email }}
+			</td>
+			<td>
+				{{ organization.contact_number }}
+			</td>
+            <td>
+                {{ organization.youtube_channel }}
+            </td>
+            
+			<td>
+				<a id="pet-delete" class="btn btn-danger" href=""><i class="icon-remove"></i></a>
+			</td>
+		</tr>
+	{% endfor %}
+	</tbody>
+</table>

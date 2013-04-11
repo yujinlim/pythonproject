@@ -48,8 +48,6 @@ class SinglePetView (django.views.generic.View) :
 class PetEntriesView(assistedjson.views.LoginRequiredJsonView, paginatedview.views.PaginatedView):
     def get(self, request, *args, **kwargs):
         context = self.prepare_paginated_context(request)
-        print("context here ==>")
-        print(context)
         self._response.debug('done')
         self._response.html(django.template.loader.render_to_string("pets/entries_list.html", context))
         print("rendered")
@@ -66,24 +64,76 @@ class PetEntriesView(assistedjson.views.LoginRequiredJsonView, paginatedview.vie
         return 5
         
 # Edit pet
-class PetVideoInsert():
-    def save_videos(self, request):
-        self.errors = []
-        videos = json.loads(request.POST.get("videos", "[]"))
-        for video in videos:
-            form = pet.forms.PetVideoForm(video)
-            if form.is_valid():
-                video = form.save()
-            else:
-                self.errors = self.errors + form.errors
-        return self.errors.__len__() == 0
+class PetVideos():
+    pass
         
-        
+class PetInsertView(django.views.generic.View):
+    # success_url = django.core.urlresolvers.reverse_lazy('pet:list')
+    
+    def get(self, request, *args, **kwargs):
+        """ get form for insert pet """
+#        print(request.user.organization.youtube_channel)
+#        return None
+        pet_form = pet.forms.PetForm()
+        pet_form.channel = request.user.organization.youtube_channel
+        pet_video_form = pet.forms.PetVideoForm()
+        storage = django.contrib.messages.get_messages(request)
+        for message in storage:
+            print(message)
+            print(type(message))
+            # message[3] = message[3].replace('_', ' ')
+        storage.used = True
+        context = {'pet_form': pet_form,'pet_video_form': pet_video_form, 'messages' : storage}
+        context.update(django.core.context_processors.csrf(request))
+        return django.shortcuts.render_to_response('pets/pet_insert.html', context)
+
+    def post(self, request, *args, **kwargs):
+        """ insert pet """
+        pet_form = pet.forms.PetForm(request.POST)
+        # get all pet videos from a json encoded string
+        pet_videos = json.loads(request.POST['videos'])
+        if pet_form.is_valid():
+            print("is valid")
+            new_pet_form = pet_form.save(commit=False)
+            new_pet_form.organization = request.user
+            new_pet_form.save()
+            # save pet video
+            for pet_video in pet_videos:
+                pet_video_form = pet.forms.PetVideoForm(pet_video)
+                print(pet_video_form)
+                if pet_video_form.is_valid():
+                    instance = pet_video_form.save(commit=False)
+                    print("instance:", instance)
+                    
+                    print(instance.created_by_id)
+                    if instance.created_by_id == None:
+                        instance.created_by_id = request.user.id
+                    if instance.pet_id == None:
+                        instance.pet = new_pet_form
+                        
+                    # replacement for ordering as default 1
+                    if instance.ordering is None:
+                        instance.ordering = 1
+                    instance.save()
+                    print("instance in saved")
+                else:
+                    for error in pet_video_form.errors.items:
+                        django.contrib.messages.error(request, error)
+                    print(django.contrib.messages)
+            return django.http.HttpResponseRedirect(django.core.urlresolvers.reverse('pet:list'))
+        else:
+            print("not valid")
+            for error in pet_form.errors:
+                print(type(error))
+                django.contrib.messages.error(request, error)
+            # return django.shortcuts.render_to_response('pets/pet_insert.html', request)
+        return django.http.HttpResponseRedirect(django.core.urlresolvers.reverse('pet:insert'))
+
 class PetEditView(django.views.generic.UpdateView):
     # form_class = pet.forms.PetForm()
     # Below is generic view
     # model = pet.models.Pet
-    template_name = "pets/pet_form.html"
+    template_name = "pets/pet_edit.html"
     success_url = django.core.urlresolvers.reverse_lazy('pet:list')
     
     def get(self, request, *args, **kwargs):
@@ -91,102 +141,67 @@ class PetEditView(django.views.generic.UpdateView):
         pet_form = pet.forms.PetForm(instance=pet_object)
         pet_form.id = self.kwargs['pk']
         pet_videos = list(pet_object.videos.all())
-        pet_video_forms = []
+        """pet_video_forms = []
         for pet_video in pet_videos:
-            pet_video_forms.append(pet.forms.PetVideoForm(instance=pet_video))
-        context = {'form': pet_form, 'video_forms':pet_video_forms}
-        print(context)
+            pet_video_forms.append(pet.forms.PetVideoForm(instance=pet_video))"""
+        pet_videos = map(lambda x:x.toDict(), list(pet_videos))
+        context = {'pet_form': pet_form, 'pet_videos':json.dumps(pet_videos)}
+        context.update(django.core.context_processors.csrf(request))
         return django.shortcuts.render_to_response(self.template_name, context )
     
-#    def get_object(self, queryset=None):
-#        print("get object first")
-#        pet_object = pet.models.Pet.objects.get(id = self.kwargs['pk'])
-#        # pet_video_object = pet_object.video.all()
-#        return pet_object
-
-# Insert new pet
-class PetInsertView(django.views.generic.View):
-    # success_url = django.core.urlresolvers.reverse_lazy('pet:list')
-    
-    def get(self, request, *args, **kwargs):
-        """ get form for insert pet """
-        pet_form = pet.forms.PetForm()
-        pet_video_form = pet.forms.PetVideoForm()
-        print(pet_form, pet_video_form)
-        context = {'pet_form': pet_form,'pet_video_form': pet_video_form}
-        context.update(django.core.context_processors.csrf(request))
-        return django.shortcuts.render_to_response('pets/pet_insert.html', context)
-
     def post(self, request, *args, **kwargs):
-        """ insert pet """
-        pet_form = pet.forms.PetForm(request.POST)
+        object_id = kwargs['pk']
+        pet_object = django.shortcuts.get_object_or_404(pet.models.Pet, pk=object_id)
         pet_videos = json.loads(request.POST['videos'])
-        # pet_video_form = pet.forms.PetVideoForm(request.POST)
-#        
-#        for pet_video in pet_videos:
-#            print(type(pet_video))
-#            video = pet.models.PetVideo(pet_video)
-#            print(video.video_link)
-#        # videos = pet.models.PetVideo(pet_videos)
-#        # print(videos)
-#        print(request.POST)
-#        print(type(pet_videos))
-        # print(request.POST)
-        # print(pet_form, pet_video_form)
-        
+        pet_form = pet.forms.PetForm(data=request.POST, instance=pet_object)
+        # check pet form is valid
         if pet_form.is_valid():
             print("is valid")
-            new_pet_form = pet_form.save()
-            for pet_video in pet_videos:
+            new_pet_form = pet_form.save(commit=False)
+            # get organization detail from login user
+            new_pet_form.organization = request.user
+            new_pet_form.save()
+            # get all existing video
+            pet_videos_ids = [x['video_id'] for x in pet_videos if 'video_id' in x]
+            # get all new videos
+            pet_videos_without_ids = [x for x in pet_videos if 'video_id' not in x]
+            print(pet_videos_ids, pet_videos_without_ids)
+            # delete removed videos
+            try:
+                pet.models.PetVideo.objects.exclude(pk__in=pet_videos_ids).filter(pet=pet_object).delete()
+            except django.db.DatabaseError:
+                print("Error in Pet Videos deletion")
+            
+            # insert each of the new pet videos
+            for pet_video in pet_videos_without_ids:
+                # pet_video_object = django.shortcuts.get_object_or_404(pet_video)
                 pet_video_form = pet.forms.PetVideoForm(pet_video)
+                print(pet_video_form)
                 if pet_video_form.is_valid():
                     instance = pet_video_form.save(commit=False)
+                    print("instance:", instance)
                     print(instance.created_by_id)
                     if instance.created_by_id == None:
                         instance.created_by_id = request.user.id
                     if instance.pet_id == None:
                         instance.pet = new_pet_form
+                    # replacement for ordering as default 1
+                    if instance.ordering is None:
+                        instance.ordering = 1
                     instance.save()
                     print("instance in saved")
                 else:
-                    for error in pet_video_form.errors:
-                        print(error)
+                    for error in pet_video_form.errors.items:
                         django.contrib.messages.error(request, error)
-                    print("error in saving videos")
-                    return django.http.HttpResponseRedirect(django.core.urlresolvers.reverse('pet:insert'))
+                    print(django.contrib.messages)
             return django.http.HttpResponseRedirect(django.core.urlresolvers.reverse('pet:list'))
         else:
             print("not valid")
             for error in pet_form.errors:
-                print(error)
+                print(type(error))
                 django.contrib.messages.error(request, error)
-            print(request)
-            return django.http.HttpResponseRedirect(django.core.urlresolvers.reverse('pet:insert'))
-#    form_class = pet.forms.PetForm
-#    model = pet.models.Pet
-#    template_name = "pets/pet_insert.html"
-#    success_url = django.core.urlresolvers.reverse_lazy('pet:list')
-#    
-#    def get_context_data(self, **kwargs):
-#        context = super(PetInsertView, self).get_context_data(**kwargs)
-#        context["petvideo_form"] = pet.forms.PetVideoForm()
-#        context["videos"] = []
-#        return context
-#    
-#    def post(self, request, *args, **kwargs):
-#        form = pet.forms.PetForm(request.POST)
-#        if form.is_valid():
-#            form.save()
-#        else:
-#            #return
-#            for error in form.errors:
-#                django.contrib.messages.error(request, error)
-#            return django.http.HttpResponseRedirect(django.core.urlresolvers.reverse('pet:insert'))
-#        if not self.save_videos(request):
-#            for error in form.errors:
-#                django.contrib.messages.error(request, error)
-#        return django.http.HttpResponseRedirect(django.core.urlresolvers.reverse('pet:list'))
-#        
+            # return django.shortcuts.render_to_response('pets/pet_insert.html', request)
+        return django.http.HttpResponseRedirect(django.core.urlresolvers.reverse('pet:edit', kwargs={'pk':object_id}))
 
 class PetDeleteView(django.views.generic.View):
     def get(self, request, *args, **kwargs):
@@ -206,5 +221,9 @@ class PetSpeciesView(assistedjson.views.LoginRequiredJsonView):
     
 class PetTestView(django.views.generic.View):
     pass
+
+class PetView(assistedjson.views.JsonView):
+    def get(self, request, *args, **kwargs):
+        return django.shortcuts.render_to_response('pets/pet.html')
     
         

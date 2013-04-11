@@ -1,0 +1,28 @@
+<div id="video" ng-show="insertPet">
+    <div>New Link</div>
+    <div>
+        <div class="form-inline">
+            <label class="pet-label">Title</label>
+            <input type="text" ng-model="videoTitle"/>
+            <label class="pet-label">Video Link </label> 
+            <input type="text" ng-model="videoLink"/>
+            <label class="pet-label">Published</label>
+            <input type="checkbox" ng-model="videoPublished"/>
+            <a href="" class="btn" ng-click="addVideo()">add a video</a>
+        </div>
+        {% include 'pets/pet_videos.html' %}
+    </div>
+    <div class="divider"></div>
+    {% verbatim %}
+    <div id="YouTubeVideoContainer">
+        <div>From YouTube</div>
+        <div class="youtubevideo" ng-class="{selected: video.isSelected}" ng-repeat="video in youtubeVideos">
+        <a href="" ng-disabled="video.isSelected" ng-click="addVideo(video)" >
+            <img src="{{video.media$group.media$thumbnail.0.url}}"  alt="" class="img-polaroid" style="width:200px;z-index:-1;"/>
+        </a>
+        <div class="youtubevideotitle">{{video.title.$t}}</div>
+        <a ng-disabled="video.isSelected" ng-click="watchVideo(video.id.$t.split('/').reverse()[0])" class="addVideoButton">Watch</a>
+        </div>
+    </div>
+    {% endverbatim %}
+</div>

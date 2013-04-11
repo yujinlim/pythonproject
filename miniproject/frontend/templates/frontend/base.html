@@ -1,17 +1,43 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
 	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en" xmlns:fb="http://ogp.me/ns/fb#">
 
 <head>
 	<title>{% block page_title %}{% endblock %}</title>
 	<meta http-equiv="content-type" content="text/html;charset=utf-8" />
-	{% include "utilities/head_css.html" with url="utilities/bootstrap.css" %}
+    {% include "utilities/head_css.html" with url="utilities/bootstrap.css" %}
+	{% include "utilities/head_css.html" with url="utilities/normalize.css" %}
+	{% include "utilities/head_css.html" with url="utilities/jquery-ui-1.10.1.custom.css" %}
+	{% include "utilities/head_js.html" with url="utilities/jquery-1.8.3.min.js" %}
 	{% include "utilities/head_js.html" with url="utilities/bootstrap.js" %}
+	{% include "utilities/head_js.html" with url="utilities/underscore.js" %}
+	{% include "utilities/head_js.html" with url="utilities/backbone.js" %}
+	{% include "utilities/head_js.html" with url="utilities/angular.js" %}
+	{% include "utilities/head_js.html" with url="utilities/jquery-ui-1.10.1.custom.js" %}
+	{% include "utilities/head_js.html" with url="utilities/ui-bootstrap-tpls-0.2.0.js" %}
+    {% include "utilities/head_js.html" with url="utilities/utilities.js" %}
+	{% include "utilities/head_js.html" with url="frontend/frontend.js" %}
+	{% include "utilities/head_css.html" with url="frontend/frontend.css" %}
+    {% block script %}{% endblock %}
 </head>
 
-<body>
-	<a>Hello</a>
-	{% block content %}{% endblock %}
+<body ng-app="petRouletteApp">
+	<div style="background-color:#4f4f4f;">
+		<header>
+				<div class="navbar">
+                    <div class="navbar-inner pet-nav">
+                        <ul class="nav">
+                            <li><span>Pet Roulette</span></li>
+                            <li class="divider-vertical"></li>
+                        </ul>
+                    </div>
+                </div>
+		</header>
+
+		<div class="container-fluid">
+        {% block content %} {% endblock %}
+        </div>
+</div>
 </body>
 
 </html>

@@ -1,0 +1,80 @@
+{% extends 'frontend/base.html' %}
+{% block script %}
+    <script src="http://www.youtube.com/player_api"></script>
+    <script language="javascript">
+                var randomUrl = "{% url 'api:random' %}";
+                var nextUrl = "{% url 'api:next' %}";
+                var detailUrl = "{% url 'api:detail' %}";
+                app.value('randomUrl', randomUrl );
+                app.value('nextUrl', nextUrl );
+                app.value('detailUrl', detailUrl );
+                var player;
+                function onYouTubePlayerAPIReady() {
+                player = new YT.Player('youtubeVideo', {
+                  events: {
+                    'onStateChange': onPlayerStateChange
+                        }
+                    });
+                }
+
+                // when video ends
+                function onPlayerStateChange(event) {        
+                    if(event.data === 0) {          
+                        window.location.reload();
+                    }
+                }
+    </script>
+{% endblock %}
+{% block content %}
+{% verbatim %}
+<div ng-controller="petRandomVideoController" style="min-height:450px;">
+    <iframe id="youtubeVideo" type="text/html" width="640" height="390" src="{{videos.video_link}}?autoplay=1" frameborder="0">
+    </iframe>
+    <a href="" class="btn btn-primary" ng-click="nextVideo()">Next</a>
+    <div>
+        <tabs>
+            <pane heading="Comments">
+                <div id="fb-root"></div>
+                <fb:comments href="http://suterastudio.com" width="470" num_posts="10"></fb:comments>
+            </pane>
+            <pane ng-repeat="pane in panes" heading="{{pane.title}}" active="pane.active">
+                <table class="table table-striped">
+                    <tr>
+                        <td>Pet Name</td>
+                        <td>{{pane.content.name}}</td>
+                    </tr>
+                    <tr>
+                        <td>Pet Species</td>
+                        <td>{{pane.content.species_name}}</td>
+                    </tr>
+                    <tr>
+                        <td>Pet Race</td>
+                        <td>{{pane.content.race_name}}</td>
+                    </tr>
+                    <tr>
+                        <td>Organization Name</td>
+                        <td>{{pane.content.organization.name}}</td>
+                    </tr>
+                    <tr>
+                        <td>Organization Address</td>
+                        <td>{{pane.content.organization.address}}</td>
+                    </tr>
+                    <tr>
+                        <td>Organization Email</td>
+                        <td>{{pane.content.organization.email}}</td>
+                    </tr>
+                </table>
+            </pane>
+        </tabs>
+    </div>
+</div>
+<script>(function(d, s, id) {
+      var js, fjs = d.getElementsByTagName(s)[0];
+      if (d.getElementById(id)) return;
+      js = d.createElement(s); js.id = id;
+      js.src = "//connect.facebook.net/en_US/all.js#xfbml=1&appId=143798745798316";
+      fjs.parentNode.insertBefore(js, fjs);
+    }(document, 'script', 'facebook-jssdk'));
+</script>
+{% endverbatim %}
+{% endblock %}

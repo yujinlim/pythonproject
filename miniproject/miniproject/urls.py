@@ -10,7 +10,9 @@ urlpatterns = patterns('',
 	#
 	url(r'^pet/', include('pet.urls',namespace ="pet")),
 	url(r'^backend/', include('backend.urls', namespace="backend")),
-	url(r'^api/', include('api.urls', namespace="api"))
+	# url(r'^/', include('frontend.urls', namespace="frontend")),
+	url(r'^api/', include('api.urls', namespace="api")),
+	url(r'^organization/', include('organization.urls', namespace="organization"))
 	
     # Examples:
     # url(r'^$', 'miniproject.views.home', name='home'),

@@ -1,12 +1,22 @@
-	{% verbatim %} 
-    <ol>
-		<li ng-repeat="video in videos">
-			{{video.video_link}}
-			{{video.ordering}}
-			{{video.published}}
-			
-		</li>
-	</ol>
-    <input type="hidden" name="videos" value="{{videos}}"/>
-    {% endverbatim %}
+{% verbatim %}
+<table class="table table-striped" ng-show="videos.length > 0">
+	<thead>
+		<td>#</td>
+        <td>Title</td>
+		<td>Link</td>
+		<td>Published</td>
+        <td>Remove?</td>
+	</thead>
+    <tbody>
+	<tr ng-repeat="video in videos">
+		<td>{{$index + 1}}</td>
+        <td>{{video.title}}</td>
+		<td>{{video.video_link}}</td>
+		<td>{{video.published}}</td>
+		<td><a href="" ng-click="removeVideo(video, $index)"><i class="icon-remove"></i></a></td>
+	</tr>
+    </tbody>
+</table>
+<input type="hidden" name="videos" value="{{videos}}"/>
+{% endverbatim %}
 

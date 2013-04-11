@@ -1,0 +1,40 @@
+.navbar .nav > li > a{
+    color: #ffffff !important;
+    text-shadow: 0 0 0 #fffff !important;
+    text-decoration: none;
+}
+
+.nav{
+    text-transform: capitalize;
+}
+
+.pet-nav span{
+    display: block;
+    padding: 10px 15px 10px;
+}
+
+.pet-nav{
+    border-style: none !important;
+    border-radius: 0 !important;
+    -webkit-border-radius: 0 !important;
+    background-color: #00aaf0 !important;
+    color: #ffffff !important;
+    background-image: none;
+    box-shadow: 1px 1px 4px 2px rgba(0,0,0, 0.2);
+
+/*
+  background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#00aaf0), to(#f6f6f6));
+  
+
+  background: -webkit-linear-gradient(top, #f6f6f6 10%, #00aaf0);
+  
+
+  background: -moz-linear-gradient(top, #f6f6f6, #00aaf0);
+  
+
+  background: -ms-linear-gradient(top, #f6f6f6, #00aaf0);
+  
+
+  background: -o-linear-gradient(top, #f6f6f6, #00aaf0);
+*/
+}

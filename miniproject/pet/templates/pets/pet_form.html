@@ -1,40 +1,33 @@
-{% extends 'backend/base.html' %}
-{% block page_title %} pet {% endblock %}
-{% block content %} 
-<form method="POST" action="{% url 'pet:edit' pk=form.id %}/">
-	<div class="row">
-			<div class="offset2 span8">
-				<div class="form-inline">
-					<label class="pet-label">{{ form.name.label }}</label>
-							{{ form.name }} {{ form.name.errors }}
-					<label class="pet-label">{{ form.date_of_birth.label }}</label>
-							{{ form.date_of_birth }} {{ form.date_of_birth.errors }}
-				</div>
-				<div class="form-horizontal">
-					<label class="pet-label">{{ form.description.label }}</label>
-							{{ form.description }} {{ form.description.errors }}
-				</div>
-				<div class="divider"></div>
-				<div class="form-inline" data-url="{% url 'pet:species' %}">
-					<label class="pet-label">{{ form.species.label }}</label>
-							{{ form.species }} {{ form.species.errors }}
-					<label class="pet-label">{{ form.race.label }}</label>
-							{{ form.race }} {{ form.race.errors }}
-				</div>
-				<div class="divider"></div>
-				<div class="form-inline">
-					<label class="pet-label">{{ form.available_until.label }}</label>
-							{{ form.available_until }} {{ form.available_until.errors }}
-					<label class="pet-label">{{ form.organization.label }}</label>
-							{{ form.organization }} {{ form.organization.errors }}
-				</div>
-                
-			<div class="divider"></div>
-            {% for video_form in video_forms %}
-                {{ video_form }}
-            {% endfor %}
-			<input class="btn btn-primary" type="submit" value="Save"/> {% csrf_token %}
-			</div>
-	</div>
-</form>
-{% endblock %}
+<div id="pet" ng-hide="insertPet">
+    <div class="form-inline">
+        <label class="pet-label">{{ pet_form.name.label }}</label>
+                {{ pet_form.name }} {{ pet_form.name.errors }}
+        <label class="pet-label">{{ pet_form.date_of_birth.label }}</label>
+                {{ pet_form.date_of_birth }} {{ pet_form.date_of_birth.errors }}
+    </div>
+    <div class="form-horizontal">
+        <label class="pet-label">{{ pet_form.description.label }}</label>
+                {{ pet_form.description }} {{ pet_form.description.errors }}
+    </div>
+    <div class="divider"></div>
+    <div class="form-inline" data-url="{% url 'pet:species' %}">
+        <label class="pet-label">{{ pet_form.species.label }}</label>
+                {{ pet_form.species }} {{ pet_form.species.errors }}
+        <label class="pet-label">{{ pet_form.race.label }}</label>
+                {{ pet_form.race }} {{ pet_form.race.errors }}
+    </div>
+    <div class="divider"></div>
+    <div class="form-inline">
+        <label class="pet-label">{{ pet_form.available_until.label }}</label>
+                {{ pet_form.available_until }} {{ pet_form.available_until.errors }}
+<!--
+        <label class="pet-label">{{ pet_form.organization.label }}</label>
+        <select ng-model="organization" ng-change="getVideos()">
+        {% for organization in pet_form.organization.field.choices %}
+            <option value="{{ organization.0 }}"> {{ organization.1 }}</option>
+        {% endfor %}
+        </select>
+        {{ pet_form.organization.errors }}
+-->
+    </div>
+</div>

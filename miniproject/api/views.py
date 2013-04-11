@@ -53,6 +53,7 @@ class RandomApi(assistedjson.views.JsonView):
 class NextApi(RandomApi):
     """video been next"""
     def get(self, request, *args, **kwargs):
+        print("getting it done")
         current_video_id = request.session["current_video"]
         ip = self.get_user_ip(request)
         self.store_next_video(video_id=current_video_id, ip_address=ip)
@@ -64,7 +65,9 @@ class NextApi(RandomApi):
     def store_next_video(self, **kwargs):
         try:
             pet.models.PetVideoNext.objects.create(video_id = kwargs.get("video_id"), ip = kwargs.get("ip_address"))
+            print("done")
         except:
+            print("fail")
             return False
         
     def get_user_ip(self, request):
@@ -84,6 +87,11 @@ class DetailApi(assistedjson.views.JsonView):
         
         # grab pet details 
         pet = self.get_pet_details(video_id)
+        pet_species_name = pet.species.name
+        try:
+            pet_race_name = pet.race.name
+        except:
+            pet_race_name = ""
         # grab videos for this pet
         pet_videos = pet.videos.all()
         pet_organization = self.get_organization(pet.organization_id)
@@ -93,6 +101,8 @@ class DetailApi(assistedjson.views.JsonView):
         as_Dict = pet.toDict()
         as_Dict["videos"] = pet_videos
         as_Dict["organization"] = pet_organization.toDict()
+        as_Dict["species_name"] = pet_species_name
+        as_Dict["race_name"] = pet_race_name
         self._response.data(key="pet", value=as_Dict)
         self._response.debug("done")
         return self.respond()
@@ -106,13 +116,15 @@ class DetailApi(assistedjson.views.JsonView):
         organization_details = pet.models.Organization.objects.get(user_id=user_id)
         return organization_details
             
-class AppointmentApi(assistedjson.views.JsonView):
-    def get(self, request, *args, **kwargs):
+class AppointmentApi(DetailApi):
+    def post(self, request, *args, **kwargs):
         # grab all details on post
         name = request.POST.get('name', None)
         email = request.POST.get('email', None)
         contact_number = request.POST.get('contact_number', None)
         appointment_date =  request.POST.get('date', None)
+        video_id = request.session["current_video"]
+        pet =  self.get_pet_details(video_id)
         if appointment_date is not None:
             if type(appointment_date) != datetime.datetime.date():
                 self._response.data(key="date_error", value="Date format error") 
@@ -121,7 +133,7 @@ class AppointmentApi(assistedjson.views.JsonView):
             if type(appointment_time) != datetime.datetime.time():
                 self._response.data(key="time_error", value="Time format error")
         if name is not None and email is not None and contact_number is not None and appointment_date is not None and appointment_time is not None:
-            appointment_result = self.set_appointment(name, email, contact_number, appointment_date, appointment_time)
+            appointment_result = self.set_appointment(name, email, contact_number, appointment_date, appointment_time, pet)
             self._response.data(key="appointment_result", value=str(appointment_result))
             self._response.debug("done")
         else:
@@ -129,13 +141,45 @@ class AppointmentApi(assistedjson.views.JsonView):
             self._response.data(key="appointment_result", value="fail")
         return self.respond()
     
-    def set_appointment(self, name, email, contact_number, appointment_date, appointment_time):
+    def get(self, request, *args, **kwargs):
+        # grab current video id
+        video_id = request.session["current_video"]
+        
+        # grab pet details 
+        pet = self.get_pet_details(video_id)
+        
+        # grab videos for this pet
+        # pet_videos = pet.videos.all()
+        
+        #grab all appointments for this pet
+        pet_appointments = pet.appointments.all()
+        # pet_organization = self.get_organization(pet.organization_id)
+        
+        # parse to dict for every video
+        # pet_videos = map(lambda x:x.toDict(), list(pet_videos))
+        
+        pet_appointments = map(lambda x:x.toDict(), list(pet_appointments))
+        # insert into a dictionary
+        as_Dict = pet_appointments
+        # as_Dict["organization"] = pet_organization.toDict()
+        
+        # as_Dict["appointments"] = pet_appointments
+        self._response.data(key="appointments", value=as_Dict)
+        self._response.debug("done")
+        self._response.message("This returns current pet's appointments list")
+        return self.respond()
+    
+    def set_appointment(self, name, email, contact_number, appointment_date, appointment_time, pet):
         try:
-            pet.models.Appointment.objects.create(name=name, email=email, contact_number=contact_number, appointment_datetime = appointment_date, appointment_time = appointment_time)
+            pet.models.Appointment.objects.create(name=name, email=email, contact_number=contact_number, appointment_datetime = appointment_date, appointment_time = appointment_time, pet=pet)
         except:
             return False
         return True
-    
+
+class AppointmentConfirmationApi():
+    pass
+
+
 class DonationApi(assistedjson.views.JsonView):
     def post(self, request, *args, **kwargs):
         pass
