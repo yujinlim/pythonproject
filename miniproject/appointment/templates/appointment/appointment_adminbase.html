@@ -1,0 +1,13 @@
+{% extends 'backend/base.html' %}
+{% block page_title %} pet {% endblock %}
+{% block script %}
+	{% include "utilities/head_js.html" with url="utilities/zpaginator/zpaginator.js" %}
+	{% include "utilities/head_js.html" with url="utilities/zbootstrap/zbootstrap.js" %}
+	{% include "utilities/head_js.html" with url="backend/pets.js" %}
+	{% include "utilities/head_css.html" with url="backend/pets.css" %}
+{% endblock %}
+{% block content %} 
+	<h2>{{ page_title }}</h2>
+	<a class="btn btn-primary" href="{% url 'organization:insert' %}">new organization</a>
+	<div id="pet-entries-list" data-default-page="1" data-default-order="name" data-default-order-dir="asc" data-url="{% url 'organization:entries' %}"></div>
+{% endblock %}

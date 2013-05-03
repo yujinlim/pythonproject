@@ -1,0 +1,69 @@
+{% include "pagination/pagination.html" with pagination_name="pets_pagination" %}
+
+<table class="table table-striped">
+	<thead>
+		<tr>
+			<th>
+				#
+			</th>
+			<th>
+				Name {% include "pagination/ordering_button.html" with order="name" dir="asc" %} {% include "pagination/ordering_button.html" with order="name" dir="desc" %}
+			</th>
+			<th>
+				Created At {% include "pagination/ordering_button.html" with order="created_datetime" dir="asc" %} {% include "pagination/ordering_button.html" with order="created_datetime" dir="desc" %}
+			</th>
+			<th>
+				Email {% include "pagination/ordering_button.html" with order="email" dir="asc" %} {% include "pagination/ordering_button.html" with order="email" dir="desc" %}
+			</th>
+            <th>
+				Email {% include "pagination/ordering_button.html" with order="contact_number" dir="asc" %} {% include "pagination/ordering_button.html" with order="contact_number" dir="desc" %}
+			</th>
+			<th>
+				Appointment Date  {% include "pagination/ordering_button.html" with order="appointment_datetime" dir="asc" %} {% include "pagination/ordering_button.html" with order="appointment_datetime" dir="desc" %}
+			</th>
+            <th>
+				Appointment Time {% include "pagination/ordering_button.html" with order="appointment_time" dir="asc" %} {% include "pagination/ordering_button.html" with order="appointment_time" dir="desc" %}
+			</th>
+            <th>
+				Pet {% include "pagination/ordering_button.html" with order="pet.name" dir="asc" %} {% include "pagination/ordering_button.html" with order="pet.name" dir="desc" %}
+			</th>
+			<th>
+				
+			</th>
+		</tr>
+	</thead>
+	<tbody>
+	{% for appointment in page_object %}
+		<tr>
+			<td>
+			{{ forloop.counter0|add:page_object.start_index }}
+			</td>
+			<td>
+				<a href="">{{ appointment.name }}</a>
+			</td>
+			<td>
+				{{ appointment.created_datetime|date:"d M Y" }}
+			</td>
+			<td>
+				{{ organization.email }}
+			</td>
+			<td>
+				{{ organization.contact_number }}
+			</td>
+            <td>
+                {{ organization.appointment_datetime|date:"d M Y" }}
+            </td>
+            <td>
+				{{ appointment.appointment_time|date:"H i" }}
+			</td>
+            <td>
+				{{ appointment.pet.name }}
+			</td>
+			<td>
+				<a id="pet-delete" class="btn btn-danger" href=""><i class="icon-remove"></i></a>
+			</td>
+		</tr>
+	{% endfor %}
+	</tbody>
+</table>
+
