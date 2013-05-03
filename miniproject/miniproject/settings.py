@@ -121,6 +121,7 @@ INSTALLED_APPS = (
     'django.contrib.sites',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.humanize',
     'pet',
     'frontend',
     'assistedjson',
@@ -128,6 +129,7 @@ INSTALLED_APPS = (
     'utilities',
     'paginatedview',
     'organization',
+    'appointment',
     # Uncomment the next line to enable the admin:
     # 'django.contrib.admin',
     # Uncomment the next line to enable admin documentation:

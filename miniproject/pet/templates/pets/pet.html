@@ -28,9 +28,13 @@
 {% block content %}
 {% verbatim %}
 <div ng-controller="petRandomVideoController" style="min-height:450px;">
+    <div modal="openAppointmentModal" close="close()" options="opts">
+        {% %}
+    </div>
     <iframe id="youtubeVideo" type="text/html" width="640" height="390" src="{{videos.video_link}}?autoplay=1" frameborder="0">
     </iframe>
     <a href="" class="btn btn-primary" ng-click="nextVideo()">Next</a>
+    <a href="" class="btn btn-primary" ng-click="openModal()">Adopt</a>
     <div>
         <tabs>
             <pane heading="Comments">

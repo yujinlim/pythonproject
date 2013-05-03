@@ -29,6 +29,7 @@ class RandomApi(assistedjson.views.JsonView):
         # store current video id into session
         request.session["current_video"] = video.pk
         pet = video.pet.toDict()
+        pet["next_count"] = self.get_next_count(pet["id"])
         as_Dict = video.toDict()
         as_Dict["pet"] = pet
         # parse video as json response
@@ -49,6 +50,11 @@ class RandomApi(assistedjson.views.JsonView):
         
         qs = pet.models.PetVideo.objects.exclude(pk__in=watched).all()[row_number: row_number + 1][0]
         return qs
+    
+    def get_next_count(self, pet_id):
+        """get count for nexted pet"""
+        next_count = pet.models.PetVideoNext.objects.filter(video__in=pet.models.PetVideo.objects.filter(pet__pk=pet_id)).count()
+        return next_count
     
 class NextApi(RandomApi):
     """video been next"""

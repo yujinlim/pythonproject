@@ -30,8 +30,10 @@ class PetsView(assistedjson.views.JsonView):
 # List of all pets
 class PetListView (django.views.generic.View) :
     def get(self, request, *args):
-        context = {'page_title':'List Of Pets'}
-        return django.shortcuts.render_to_response("pets/adminbase.html", context)
+        insert_url = django.core.urlresolvers.reverse('pet:insert')
+        entries_url = django.core.urlresolvers.reverse('pet:entries')
+        context = {'page_title':'List Of Organizations', 'insert_url':insert_url, 'entries_url':entries_url, 'page_type':'pet'}
+        return django.shortcuts.render_to_response("backend/base_list.html", context)
         
 # Get single pet
 class SinglePetView (django.views.generic.View) :

@@ -18,8 +18,10 @@ import django.core.context_processors
 
 class OrganizationListView(assistedjson.views.JsonView):
     def get(self, request, *args, **kwargs):
-        context = {'page_title':'List Of Organizations'}
-        return django.shortcuts.render_to_response("organization/organization_adminbase.html", context)
+        insert_url = django.core.urlresolvers.reverse('organization:insert')
+        entries_url = django.core.urlresolvers.reverse('organization:entries')
+        context = {'page_title':'List Of Organizations', 'insert_url':insert_url, 'entries_url':entries_url, 'page_type':'organization'}
+        return django.shortcuts.render_to_response("backend/base_list.html", context)
 
 # Get list of pets
 class OrganizationEntriesView(assistedjson.views.LoginRequiredJsonView, paginatedview.views.PaginatedView):

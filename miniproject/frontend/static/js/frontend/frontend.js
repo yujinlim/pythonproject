@@ -50,4 +50,17 @@ app.controller('petRandomVideoController', function($scope, petRandomVideoServic
                 { title: "Details", content:data.pet }
             ];
         });
+        
+        $scope.openModal = function(){
+            $scope.openAppointmentModal = true;
+        };
+        
+        $scope.close =  function(){
+            $scope.openAppointmentModal = false;
+        };
+        
+        $scope.opts = {
+            backdropFade: true,
+            dialogFade:true
+        };
 });
